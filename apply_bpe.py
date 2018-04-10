@@ -25,7 +25,7 @@ argparse.open = open
 
 class BPE(object):
 
-    def __init__(self, codes, merges=-1, separator='@@', vocab=None, glossaries=None):
+    def __init__(self, codes, merges=-1, separator='▁', vocab=None, glossaries=None):
 
         codes.seek(0)
 
@@ -41,6 +41,10 @@ class BPE(object):
 
         # some hacking to deal with duplicates (only consider first instance)
         self.bpe_codes = dict([(code,i) for (i,code) in reversed(list(enumerate(self.bpe_codes)))])
+
+        for pair, i in self.bpe_codes.items():
+            if len(pair) < 2:
+                print(pair)
 
         self.bpe_codes_reverse = dict([(pair[0] + pair[1], pair) for pair,i in self.bpe_codes.items()])
 
@@ -59,6 +63,13 @@ class BPE(object):
             # eliminate double spaces
             if not word:
                 continue
+
+            flag = False
+            if word.startswith('▁'):
+                flag = True
+
+            word = re.sub('▁', '', word)
+
             new_word = [out for segment in self._isolate_glossaries(word)
                         for out in encode(segment,
                                           self.bpe_codes,
@@ -69,9 +80,12 @@ class BPE(object):
                                           self.cache,
                                           self.glossaries)]
 
+            '''
             for item in new_word[:-1]:
                 output.append(item + self.separator)
             output.append(new_word[-1])
+            '''
+            output += [('▁' if flag else '') + self.separator + new_word[0]] + new_word[1:]
 
         return ' '.join(output)
 
@@ -105,7 +119,7 @@ def create_parser():
         metavar='PATH',
         help="Output file (default: standard output)")
     parser.add_argument(
-        '--separator', '-s', type=str, default='@@', metavar='STR',
+        '--separator', '-s', type=str, default='▁', metavar='STR',
         help="Separator between non-final subword units (default: '%(default)s'))")
     parser.add_argument(
         '--vocabulary', type=argparse.FileType('r'), default=None,

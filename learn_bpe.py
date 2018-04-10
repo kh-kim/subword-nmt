@@ -57,6 +57,8 @@ def get_vocabulary(fobj, is_dict=False):
     """
     vocab = Counter()
     for i, line in enumerate(fobj):
+        line = line.replace('▁', '')
+
         if is_dict:
             try:
                 word, count = line.strip().split(' ')
