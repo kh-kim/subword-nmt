@@ -68,7 +68,8 @@ class BPE(object):
             if word.startswith('▁'):
                 flag = True
 
-            word = re.sub('▁', '', word)
+            #word = re.sub('▁', '', word)
+            word = word.replace('▁', '')
 
             new_word = [out for segment in self._isolate_glossaries(word)
                         for out in encode(segment,
