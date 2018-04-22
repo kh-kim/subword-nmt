@@ -330,7 +330,8 @@ if __name__ == '__main__':
     for line in args.input:
         leading_whitespace = len(line)-len(line.lstrip())
         if leading_whitespace:
-            args.output.write(line[:leading_whitespace])
+            #args.output.write(line[:leading_whitespace])
+            pass
 
         args.output.write(bpe.segment(line.strip()))
 
