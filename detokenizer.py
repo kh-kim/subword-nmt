@@ -1,0 +1,1 @@
+/home/khkim/Workspace/nlp/corpus/parallel_corpora/detokenizer.py
