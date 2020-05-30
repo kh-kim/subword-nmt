@@ -45,6 +45,7 @@ class BPE(object):
         for pair, i in self.bpe_codes.items():
             if len(pair) < 2:
                 print(pair)
+            assert len(pair) >= 2
 
         self.bpe_codes_reverse = dict([(pair[0] + pair[1], pair) for pair,i in self.bpe_codes.items()])
 
