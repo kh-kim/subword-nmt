@@ -198,7 +198,6 @@ def main(infile, outfile, num_symbols, min_frequency=2, verbose=False, is_dict=F
     outfile.write('#version: 0.2\n')
 
     vocab = get_vocabulary(infile, is_dict)
-    print(list(vocab.items())[:10])
 
     def split(x, y, prefix='▁'):
         if x[0] == prefix:
@@ -206,7 +205,6 @@ def main(infile, outfile, num_symbols, min_frequency=2, verbose=False, is_dict=F
         return (tuple(x[:-1]) + (x[-1] + '</w>',), y)
 
     vocab = dict([split(x, y) for (x, y) in vocab.items()])
-    print(list(vocab.items())[:10])
     sorted_vocab = sorted(vocab.items(), key=lambda x: x[1], reverse=True)
 
     stats, indices = get_pair_statistics(sorted_vocab)
